@@ -63,7 +63,7 @@ class AudioPlayer extends Component {
     this.setState({ liveInput: !liveInput });
   }
 
-  async fetchSource(timeout = 4000) {
+  async fetchSource(timeout = 7000, retry = 3) {
     const { animator, onReady } = this.props;
 
     try {
@@ -84,8 +84,8 @@ class AudioPlayer extends Component {
       this.setState({ musicLoaded: true });
       onReady();
     } catch (error) {
-      if (timeout >= 500) {
-        this.fetchSource(timeout / 2);
+      if (retry >= 0) {
+        this.fetchSource(1000, retry - 1);
       } else {
         onReady();
       }

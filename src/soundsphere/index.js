@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import {
   Scene,
   PerspectiveCamera,
@@ -161,7 +162,8 @@ class Soundsphere extends Component {
   }
 
   render() {
-    const { animator, scene, camera } = this;
+    const { animator, scene, camera, props } = this;
+    const { onReady } = props;
 
     return (
       <div id="soundsphere">
@@ -176,10 +178,18 @@ class Soundsphere extends Component {
           />
           <CanvasASCII id="canvas-ascii" ref={a => (this.ascii = a)} />
         </div>
-        <AudioPlayer ref={a => (this.audio = a)} animator={animator} />
+        <AudioPlayer
+          ref={a => (this.audio = a)}
+          animator={animator}
+          onReady={onReady}
+        />
       </div>
     );
   }
 }
+
+Soundsphere.propTypes = {
+  onReady: PropTypes.func
+};
 
 export default Soundsphere;

@@ -24,7 +24,7 @@ class AudioPlayer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { liveInput: false, soundOn: true };
+    this.state = { musicLoaded: false, liveInput: false, soundOn: true };
 
     this.toggleSound = this.toggleSound.bind(this);
     this.toggleSoundInput = this.toggleSoundInput.bind(this);
@@ -53,29 +53,23 @@ class AudioPlayer extends Component {
     if (!this.liveSource) {
       try {
         this.liveSource = await createLiveSource();
+        this.liveSource.connect(this.liveInput);
       } catch (error) {}
     }
 
-    if (this.liveSource) {
-      if (!liveInput) {
-        this.liveSource.connect(this.analyser);
-        this.source.disconnect(this.gain);
-      } else {
-        this.liveSource.disconnect(this.analyser);
-        this.source.connect(this.gain);
-      }
-    }
+    this.liveInput.gain.value = liveInput ? 0 : 1;
+    this.musicInput.gain.value = liveInput ? 1 : 0;
 
     this.setState({ liveInput: !liveInput });
   }
 
-  async fetchSource(timeout) {
-    const { animator } = this.props;
+  async fetchSource(timeout = 5000) {
+    const { animator, onReady } = this.props;
 
     try {
       this.source = await createMediaSource(Soundtrack, timeout);
       this.source.element.loop = true;
-      this.source.connect(this.gain);
+      this.source.connect(this.musicInput);
 
       if (animator.startTime > 0) {
         this.source.start();
@@ -86,42 +80,56 @@ class AudioPlayer extends Component {
       animator.onPause(() => this.source.pause());
       animator.onResume(() => this.source.resume());
       animator.onStop(() => this.source.stop());
+
+      this.setState({ musicLoaded: true });
+      onReady();
     } catch (error) {
       if (timeout < 10000) {
-        this.fetchSource(timeout + 1000);
+        this.fetchSource(timeout + 5000);
+      } else {
+        onReady();
       }
     }
   }
 
   componentDidMount() {
-    this.analyser = createAnalyser();
+    this.musicInput = createGain();
+    this.musicInput.gain.value = 1;
+    this.liveInput = createGain();
+    this.liveInput.gain.value = 0;
     this.gain = createGain();
-    let afterGain = createGain();
-    afterGain.gain.value = 0.1;
+    this.analyser = createAnalyser();
 
-    this.gain
+    this.musicInput.connect(this.analyser);
+    this.liveInput
+      .connect(this.gain)
       .connect(this.analyser)
-      .connect(afterGain)
       .connect(destination);
 
-    this.fetchSource(2000);
+    this.fetchSource();
   }
 
   render() {
-    const { liveInput, soundOn } = this.state;
+    const { musicLoaded, liveInput, soundOn } = this.state;
 
     return (
       <div id="audio-player">
-        <div id="audio-info" className={ClassNames({ show: soundOn })}>
-          <span id="audio-title">Mirror’s Edge Soundtrack - Introduction</span>
-          <span id="audio-author">Solar Fields</span>
-        </div>
-        <img
-          id="sound-toggle"
-          src={soundOn ? Sound : Mute}
-          alt="Sound"
-          onClick={this.toggleSound}
-        />
+        {musicLoaded && (
+          <div id="audio-info" className={ClassNames({ show: soundOn })}>
+            <span id="audio-title">
+              Mirror’s Edge Soundtrack - Introduction
+            </span>
+            <span id="audio-author">Solar Fields</span>
+          </div>
+        )}
+        {musicLoaded && (
+          <img
+            id="sound-toggle"
+            src={soundOn ? Sound : Mute}
+            alt="Sound"
+            onClick={this.toggleSound}
+          />
+        )}
         <img
           id="live-input-toggle"
           src={liveInput ? Music : Microphone}
@@ -134,7 +142,8 @@ class AudioPlayer extends Component {
 }
 
 AudioPlayer.propTypes = {
-  animator: PropTypes.instanceOf(Animator)
+  animator: PropTypes.instanceOf(Animator),
+  onReady: PropTypes.func
 };
 
 export default AudioPlayer;

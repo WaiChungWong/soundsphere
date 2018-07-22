@@ -19,9 +19,6 @@ body {
 
       #start-button {
         color: transparent;
-        line-height: 0px;
-        width: 0px;
-        height: 0px;
         opacity: 0;
       }
     }
@@ -38,7 +35,9 @@ body {
       font-family: Courier New, sans-serif;
       font-weight: 100;
       transform: translate(-50%, -50%);
-      transition: all 0.5s, color 0s;
+      color: black;
+      opacity: 1;
+      transition: opacity 0.5s, color 0s;
       cursor: pointer;
 
       &::after {

@@ -10,28 +10,36 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.onStart = this.onStart.bind(this);
-    this.state = { interacted: false };
+    this.onReady = this.onReady.bind(this);
+    this.onClick = this.onClick.bind(this);
+
+    this.state = { ready: false, interacted: false };
   }
 
-  onStart() {
-    setTimeout(() => {
-      if (isReady()) {
-        this.soundsphere.start();
-        this.setState({ interacted: true });
-      }
-    });
+  onReady() {
+    this.setState({ ready: true });
+  }
+
+  onClick() {
+    if (this.state.ready) {
+      setTimeout(() => {
+        if (isReady()) {
+          this.soundsphere.start();
+          this.setState({ interacted: true });
+        }
+      });
+    }
   }
 
   render() {
-    const { interacted } = this.state;
+    const { ready, interacted } = this.state;
 
     return (
       <div id="app">
-        <Soundsphere ref={s => (this.soundsphere = s)} />
+        <Soundsphere ref={s => (this.soundsphere = s)} onReady={this.onReady} />
         <div id="start-overlay" className={ClassNames({ interacted })}>
-          <div id="start-button" onClick={this.onStart}>
-            Start
+          <div id="start-button" onClick={this.onClick}>
+            {ready ? "Start" : "Loading..."}
           </div>
         </div>
       </div>

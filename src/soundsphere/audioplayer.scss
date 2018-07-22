@@ -1,0 +1,51 @@
+#audio-player {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  margin: 10px;
+  z-index: 100;
+
+  #audio-info {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    left: 10px;
+    margin-right: 10px;
+    transition: 0.3s;
+
+    opacity: 0;
+
+    &.show {
+      left: 0px;
+      opacity: 1;
+    }
+
+    #audio-title,
+    #audio-author {
+      display: block;
+      font-family: Arial;
+      font-size: 13px;
+      text-align: right;
+    }
+
+    #audio-author {
+      font-size: 11px;
+    }
+  }
+
+  #sound-toggle,
+  #live-input-toggle {
+    width: 30px;
+    height: 30px;
+    vertical-align: middle;
+    opacity: 0.7;
+    cursor: pointer;
+  }
+
+  #live-input-toggle {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    margin: 10px;
+  }
+}

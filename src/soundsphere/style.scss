@@ -1,0 +1,33 @@
+#soundsphere {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+
+  #canvas-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 500px;
+    transform: translate(-50%, -50%);
+
+    #canvas,
+    #canvas-ascii {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0px;
+    }
+
+    #canvas {
+      visibility: hidden;
+    }
+
+    #canvas-ascii {
+      font-size: 4px;
+    }
+  }
+}

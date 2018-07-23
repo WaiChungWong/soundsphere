@@ -35,7 +35,7 @@ class AudioPlayer extends Component {
   }
 
   toggleSound() {
-    const { gain } = this.gain;
+    const { gain } = this.soundToggle;
     const { soundOn } = this.state;
 
     this.setState({ soundOn: !soundOn });
@@ -57,10 +57,12 @@ class AudioPlayer extends Component {
       } catch (error) {}
     }
 
-    this.liveInput.gain.value = liveInput ? 0 : 1;
-    this.musicInput.gain.value = liveInput ? 1 : 0;
+    if (this.liveSource) {
+      this.liveInput.gain.value = liveInput ? 0 : 1;
+      this.musicInput.gain.value = liveInput ? 1 : 0;
 
-    this.setState({ liveInput: !liveInput });
+      this.setState({ liveInput: !liveInput });
+    }
   }
 
   async fetchSource() {
@@ -93,12 +95,12 @@ class AudioPlayer extends Component {
     this.musicInput.gain.value = 1;
     this.liveInput = createGain();
     this.liveInput.gain.value = 0;
-    this.gain = createGain();
+    this.soundToggle = createGain();
     this.analyser = createAnalyser();
 
-    this.musicInput.connect(this.analyser);
-    this.liveInput
-      .connect(this.gain)
+    this.liveInput.connect(this.analyser);
+    this.musicInput
+      .connect(this.soundToggle)
       .connect(this.analyser)
       .connect(destination);
 

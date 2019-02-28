@@ -1,7 +1,14 @@
 {
-  "main.css": "static/css/main.9974b6cd.css",
-  "main.css.map": "static/css/main.9974b6cd.css.map",
-  "main.js": "static/js/main.dd720af7.js",
-  "main.js.map": "static/js/main.dd720af7.js.map",
-  "static/media/soundtrack.mp3": "static/media/soundtrack.f128f60f.mp3"
+  "main.css": "/soundsphere/build/static/css/main.d327bb48.chunk.css",
+  "main.js": "/soundsphere/build/static/js/main.ccce5c90.chunk.js",
+  "main.js.map": "/soundsphere/build/static/js/main.ccce5c90.chunk.js.map",
+  "runtime~main.js": "/soundsphere/build/static/js/runtime~main.3002b5a4.js",
+  "runtime~main.js.map": "/soundsphere/build/static/js/runtime~main.3002b5a4.js.map",
+  "static/js/2.956df59c.chunk.js": "/soundsphere/build/static/js/2.956df59c.chunk.js",
+  "static/js/2.956df59c.chunk.js.map": "/soundsphere/build/static/js/2.956df59c.chunk.js.map",
+  "index.html": "/soundsphere/build/index.html",
+  "precache-manifest.5b2e81d061b7608b85a84f190284643a.js": "/soundsphere/build/precache-manifest.5b2e81d061b7608b85a84f190284643a.js",
+  "service-worker.js": "/soundsphere/build/service-worker.js",
+  "static/css/main.d327bb48.chunk.css.map": "/soundsphere/build/static/css/main.d327bb48.chunk.css.map",
+  "static/media/soundtrack.mp3": "/soundsphere/build/static/media/soundtrack.f128f60f.mp3"
 }

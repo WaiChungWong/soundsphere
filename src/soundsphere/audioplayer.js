@@ -20,6 +20,8 @@ import Soundtrack from "../resources/soundtrack.mp3";
 
 import "./audioplayer.css";
 
+const TIMEOUT = 20000;
+
 class AudioPlayer extends Component {
   constructor(props) {
     super(props);
@@ -69,7 +71,7 @@ class AudioPlayer extends Component {
     const { animator, onReady } = this.props;
 
     try {
-      this.source = await createMediaSource(Soundtrack, 20000);
+      this.source = await createMediaSource(Soundtrack, TIMEOUT);
       this.source.element.loop = true;
       this.source.connect(this.musicInput);
 
